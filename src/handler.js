@@ -1,11 +1,13 @@
 const http = require('http');
 const users = require('./static.js');
 const fs = require('fs');
+const data = require('./data.js');
 
 const handler = (request, response) => {
   const endpoint = request.url.split('/')[1];
 
   if (endpoint === '') {
+
     response.writeHead(200, { "Content-Type": "text/html" });
     fs.readFile(__dirname + "/../public/index.html", function(error, file) {
       if(error) {
@@ -15,12 +17,41 @@ const handler = (request, response) => {
         response.end(file);
       }
     });
+
   } else if (endpoint === "users") {
+
     // TASK 1: replace the 3 lines below below with your own function that gets data from your database
-    const output = JSON.stringify(users);
-    response.writeHead(200, {"Content-Type": "application/json"});
-    response.end(output);
+    // const output = JSON.stringify(users);
+    // response.writeHead(200, {"Content-Type": "application/json"});
+    // response.end(output);
+    data.getData((err, res) => {
+      if (err) { throw err; }
+      let dynamicData = JSON.stringify(res);
+      response.writeHead(200, {
+        'content-type': 'application/json'
+      });
+      response.end(dynamicData);
+    });
+
+  } else if (endpoint === 'create-user') {
+
+    let body = '';
+
+    request.on('data', (chunk) => {
+      body += chunk;
+    });
+
+    request.on('end', () => {
+
+      data.setData(body, (err, res) => {
+        if (err) console.log(err);
+        response.writeHead(302, {'Location': '/'});
+        response.end();
+      });
+    });
+
   } else {
+
     const fileName = request.url;
     const fileType = request.url.split(".")[1];
     response.writeHead(200, {"Content-Type": "text/" + fileType});
@@ -34,5 +65,6 @@ const handler = (request, response) => {
     });
   }
 };
+
 
 module.exports = handler;

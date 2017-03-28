@@ -1,4 +1,4 @@
 module.exports = [
-  { name: 'Emily', location: "London" },
+  { name: 'Emily', location: "NY" },
   { name: 'Shireen', location: "Nazareth" },
 ];

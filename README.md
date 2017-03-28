@@ -9,6 +9,13 @@ In this workshop we'll be building on what we learnt in the [pg walkthrough](htt
 - Run `npm run dev`in your terminal and checkout the result at [http://localhost:5000]. This is a preview of what you'll be building.
 - Create a database locally
 - Add a users table.
+```sql
+CREATE TABLE users (
+  id            serial        PRIMARY KEY,
+  username      varchar(100)  NOT NULL,
+  location      varchar(100)  NOT NULL
+);
+```
 - Create a table called users with 3 columns.
 - Install the npm module `pg` , `npm install --save pg`.
 
@@ -19,7 +26,7 @@ In this workshop we'll be building on what we learnt in the [pg walkthrough](htt
 - Create a superuser with a password by typing `CREATE USER [the new username] WITH SUPERUSER PASSWORD '[the password of the database]';` (the password needs to be in quotes, otherwise you get an error).
 - Change ownership of the database to the new user by typing `ALTER DATABASE [name of the database] OWNER TO [the new username];`
 - Add a `config.env` file and add the database's url in this format:
-`DB_URL = postgres://[username]:[password]@localhost:5432/[database]`.
+`DB_URL=usernamehere:passwordhere@localhost:5432/nameofdatabase`.
 
 ### Task 1
 
